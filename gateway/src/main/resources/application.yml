@@ -1,0 +1,20 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: msvc-produc
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/**  # Cambia esto según tu API de productos
+            - Header=x-Auth-Token
+            - Header=userId
+            - Method=GET, POST
+          filters:
+            - StripPrefix=1  # Ajusta el valor según cuántos segmentos estás eliminando
+
+        - id: auth
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/auth/**  # Cambia esto para que coincida solo con la autenticación
+          filters:
+            - StripPrefix=1  # Ajusta el valor según cuántos segmentos estás eliminando
